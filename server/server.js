@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -12,9 +12,32 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ── Health check route ────────────────────────────────────────
+// ── Routes ────────────────────────────────────────────────────
+app.use('/api/auth', require('./routes/authRoutes'));
+
+// ── Health check ──────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.json({ message: 'AI E-Learning API is running.' });
+  res.json({
+    message: 'AI E-Learning API is running.',
+    version: '1.0.0',
+  });
+});
+
+// ── 404 handler ───────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`,
+  });
+});
+
+// ── Global error handler ──────────────────────────────────────
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.message);
+  res.status(500).json({
+    success: false,
+    message: 'An unexpected server error occurred',
+  });
 });
 
 // ── Database connection + Server start ────────────────────────
