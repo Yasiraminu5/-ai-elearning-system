@@ -8,7 +8,6 @@ const { validationResult } = require('express-validator');
 // @access  Public
 // ─────────────────────────────────────────────────────────────
 const register = async (req, res) => {
-  // Check for validation errors from express-validator
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -20,7 +19,6 @@ const register = async (req, res) => {
   const { fullName, email, password, role } = req.body;
 
   try {
-    // Check if a user with this email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -29,8 +27,6 @@ const register = async (req, res) => {
       });
     }
 
-    // Create the new user
-    // Note: password hashing happens automatically in the User model
     const user = await User.create({
       fullName,
       email,
@@ -38,7 +34,6 @@ const register = async (req, res) => {
       role: role || 'student',
     });
 
-    // Generate JWT token
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -69,7 +64,6 @@ const register = async (req, res) => {
 // @access  Public
 // ─────────────────────────────────────────────────────────────
 const login = async (req, res) => {
-  // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -81,8 +75,6 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find user by email and explicitly include password field
-    // (password has select:false in schema so we must add it back)
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -92,7 +84,6 @@ const login = async (req, res) => {
       });
     }
 
-    // Compare entered password with stored hash
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({
@@ -101,7 +92,6 @@ const login = async (req, res) => {
       });
     }
 
-    // Generate JWT token
     const token = generateToken(user._id);
 
     res.status(200).json({
@@ -127,13 +117,12 @@ const login = async (req, res) => {
 };
 
 // ─────────────────────────────────────────────────────────────
-// @desc    Get currently logged-in user profile
+// @desc    Get currently logged-in user
 // @route   GET /api/auth/me
-// @access  Private (requires JWT)
+// @access  Private
 // ─────────────────────────────────────────────────────────────
 const getMe = async (req, res) => {
   try {
-    // req.user is attached by the auth middleware
     const user = await User.findById(req.user.id);
 
     if (!user) {
