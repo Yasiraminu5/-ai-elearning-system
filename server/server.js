@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -17,39 +16,28 @@ app.use('/api/auth', require('./routes/authRoutes'));
 
 // ── Health check ──────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.json({
-    message: 'AI E-Learning API is running.',
-    version: '1.0.0',
-  });
+  res.json({ success: true, message: 'AI E-Learning API is running.' });
 });
 
 // ── 404 handler ───────────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.originalUrl} not found`,
-  });
+  res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
 });
 
 // ── Global error handler ──────────────────────────────────────
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err.message);
-  res.status(500).json({
-    success: false,
-    message: 'An unexpected server error occurred',
-  });
+  console.error('Server error:', err.message);
+  res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
-// ── Database connection + Server start ────────────────────────
+// ── Start ─────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected successfully.');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => {
     console.error('MongoDB connection failed:', err.message);

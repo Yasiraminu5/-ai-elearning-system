@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       match: [
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        'Please provide a valid email address',
+        'Please provide a valid email',
       ],
     },
     password: {
@@ -52,9 +52,7 @@ const UserSchema = new mongoose.Schema(
       },
     ],
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 UserSchema.pre('save', async function () {
