@@ -13,20 +13,14 @@ app.use(cors());
 app.use(express.json());
 
 // ── API Routes ────────────────────────────────────────────────
-app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth',    require('./routes/authRoutes'));
+app.use('/api/courses', require('./routes/courseRoutes'));
 
 // ── Serve React frontend ──────────────────────────────────────
 const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
 app.use(express.static(clientDistPath));
-
-// All non-API routes serve the React app
 app.get('*', (req, res) => {
   res.sendFile(path.join(clientDistPath, 'index.html'));
-});
-
-// ── 404 API handler ───────────────────────────────────────────
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
 });
 
 // ── Global error handler ──────────────────────────────────────
