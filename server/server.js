@@ -2,28 +2,29 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config();
 
 const app = express();
 
 // ── Middleware ────────────────────────────────────────────────
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors());
 app.use(express.json());
 
-// ── Routes ────────────────────────────────────────────────────
+// ── API Routes ────────────────────────────────────────────────
 app.use('/api/auth', require('./routes/authRoutes'));
 
-// ── Health check ──────────────────────────────────────────────
-app.get('/', (req, res) => {
-  res.json({ success: true, message: 'AI E-Learning API is running.' });
+// ── Serve React frontend ──────────────────────────────────────
+const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(clientDistPath));
+
+// All non-API routes serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
-// ── 404 handler ───────────────────────────────────────────────
+// ── 404 API handler ───────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
 });
