@@ -168,3 +168,4 @@ const StudentCourseDetail = () => {
 };
 
 export default StudentCourseDetail;
+// Quiz navigation is available via /student/quiz/:id

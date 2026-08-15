@@ -10,14 +10,13 @@ const DashboardLayout = ({ children }) => {
   const studentLinks = [
     { to: '/student/dashboard', label: '🏠 Dashboard' },
     { to: '/student/courses',   label: '📚 Courses' },
-    { to: '/student/my-courses', label: '🎓 My Learning' },
-    { to: '/student/recommendations', label: '💡 Recommendations' },
+    { to: '/student/results',   label: '📊 Results' },
   ];
 
   const adminLinks = [
     { to: '/admin/dashboard', label: '🏠 Dashboard' },
     { to: '/admin/courses',   label: '📚 Courses' },
-    { to: '/admin/students',  label: '👥 Students' },
+    { to: '/admin/quizzes',   label: '📝 Quizzes' },
   ];
 
   const links = user?.role === 'admin' ? adminLinks : studentLinks;
@@ -25,12 +24,15 @@ const DashboardLayout = ({ children }) => {
   return (
     <div className="dashboard-container">
       <nav className="navbar">
-        <span className="navbar-brand">EduAI {user?.role === 'admin' ? '— Admin' : ''}</span>
+        <span className="navbar-brand">
+          EduAI {user?.role === 'admin' ? '— Admin' : ''}
+        </span>
         <div style={{ display:'flex', gap:'1.5rem', alignItems:'center' }}>
           {links.map(link => (
             <NavLink key={link.to} to={link.to}
               style={({ isActive }) => ({
-                fontSize:'0.9rem', fontWeight: isActive ? 600 : 400,
+                fontSize:'0.9rem',
+                fontWeight: isActive ? 600 : 400,
                 color: isActive ? '#667eea' : '#555',
               })}>
               {link.label}

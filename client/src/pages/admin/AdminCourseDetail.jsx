@@ -210,3 +210,4 @@ const AdminCourseDetail = () => {
 };
 
 export default AdminCourseDetail;
+// Quiz section is managed from /admin/quizzes page
