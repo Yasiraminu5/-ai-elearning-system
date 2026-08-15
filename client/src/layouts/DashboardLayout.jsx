@@ -4,19 +4,19 @@ import { useNavigate, NavLink } from 'react-router-dom';
 const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
   const handleLogout = () => { logout(); navigate('/login'); };
 
   const studentLinks = [
-    { to: '/student/dashboard', label: '🏠 Dashboard' },
-    { to: '/student/courses',   label: '📚 Courses' },
-    { to: '/student/results',   label: '📊 Results' },
+    { to: '/student/dashboard',       label: '🏠 Dashboard'       },
+    { to: '/student/courses',         label: '📚 Courses'         },
+    { to: '/student/results',         label: '📊 Results'         },
+    { to: '/student/recommendations', label: '💡 Recommendations' },
   ];
 
   const adminLinks = [
     { to: '/admin/dashboard', label: '🏠 Dashboard' },
-    { to: '/admin/courses',   label: '📚 Courses' },
-    { to: '/admin/quizzes',   label: '📝 Quizzes' },
+    { to: '/admin/courses',   label: '📚 Courses'   },
+    { to: '/admin/quizzes',   label: '📝 Quizzes'   },
   ];
 
   const links = user?.role === 'admin' ? adminLinks : studentLinks;
@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }) => {
         <span className="navbar-brand">
           EduAI {user?.role === 'admin' ? '— Admin' : ''}
         </span>
-        <div style={{ display:'flex', gap:'1.5rem', alignItems:'center' }}>
+        <div style={{ display:'flex', gap:'1.5rem', alignItems:'center', flexWrap:'wrap' }}>
           {links.map(link => (
             <NavLink key={link.to} to={link.to}
               style={({ isActive }) => ({

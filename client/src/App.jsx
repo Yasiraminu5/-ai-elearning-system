@@ -2,18 +2,19 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './context/AuthContext';
 
-import Register            from './pages/auth/Register';
-import Login               from './pages/auth/Login';
-import StudentDashboard    from './pages/student/StudentDashboard';
-import StudentCourses      from './pages/student/StudentCourses';
-import StudentCourseDetail from './pages/student/StudentCourseDetail';
-import StudentQuiz         from './pages/student/StudentQuiz';
-import StudentResults      from './pages/student/StudentResults';
-import AdminDashboard      from './pages/admin/AdminDashboard';
-import AdminCourses        from './pages/admin/AdminCourses';
-import AdminCourseDetail   from './pages/admin/AdminCourseDetail';
-import AdminQuizzes        from './pages/admin/AdminQuizzes';
-import ProtectedRoute      from './routes/ProtectedRoute';
+import Register                from './pages/auth/Register';
+import Login                   from './pages/auth/Login';
+import StudentDashboard        from './pages/student/StudentDashboard';
+import StudentCourses          from './pages/student/StudentCourses';
+import StudentCourseDetail     from './pages/student/StudentCourseDetail';
+import StudentQuiz             from './pages/student/StudentQuiz';
+import StudentResults          from './pages/student/StudentResults';
+import StudentRecommendations  from './pages/student/StudentRecommendations';
+import AdminDashboard          from './pages/admin/AdminDashboard';
+import AdminCourses            from './pages/admin/AdminCourses';
+import AdminCourseDetail       from './pages/admin/AdminCourseDetail';
+import AdminQuizzes            from './pages/admin/AdminQuizzes';
+import ProtectedRoute          from './routes/ProtectedRoute';
 
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -33,7 +34,6 @@ function App() {
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
         <Route path="/login"    element={<PublicRoute><Login /></PublicRoute>} />
 
-        {/* Student routes */}
         <Route path="/student/dashboard" element={
           <ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
         <Route path="/student/courses" element={
@@ -44,8 +44,9 @@ function App() {
           <ProtectedRoute allowedRoles={['student']}><StudentQuiz /></ProtectedRoute>} />
         <Route path="/student/results" element={
           <ProtectedRoute allowedRoles={['student']}><StudentResults /></ProtectedRoute>} />
+        <Route path="/student/recommendations" element={
+          <ProtectedRoute allowedRoles={['student']}><StudentRecommendations /></ProtectedRoute>} />
 
-        {/* Admin routes */}
         <Route path="/admin/dashboard" element={
           <ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin/courses" element={
