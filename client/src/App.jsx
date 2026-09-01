@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './context/AuthContext';
 
+import Landing                 from './pages/Landing';
 import Register                from './pages/auth/Register';
 import Login                   from './pages/auth/Login';
 import StudentDashboard        from './pages/student/StudentDashboard';
@@ -10,10 +11,13 @@ import StudentCourseDetail     from './pages/student/StudentCourseDetail';
 import StudentQuiz             from './pages/student/StudentQuiz';
 import StudentResults          from './pages/student/StudentResults';
 import StudentRecommendations  from './pages/student/StudentRecommendations';
+import StudentProfile          from './pages/student/StudentProfile';
 import AdminDashboard          from './pages/admin/AdminDashboard';
 import AdminCourses            from './pages/admin/AdminCourses';
 import AdminCourseDetail       from './pages/admin/AdminCourseDetail';
 import AdminQuizzes            from './pages/admin/AdminQuizzes';
+import AdminStudents           from './pages/admin/AdminStudents';
+import AdminReports            from './pages/admin/AdminReports';
 import ProtectedRoute          from './routes/ProtectedRoute';
 
 const PublicRoute = ({ children }) => {
@@ -30,7 +34,7 @@ function App() {
     <Router>
       <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/"         element={<Landing />} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
         <Route path="/login"    element={<PublicRoute><Login /></PublicRoute>} />
 
@@ -46,6 +50,8 @@ function App() {
           <ProtectedRoute allowedRoles={['student']}><StudentResults /></ProtectedRoute>} />
         <Route path="/student/recommendations" element={
           <ProtectedRoute allowedRoles={['student']}><StudentRecommendations /></ProtectedRoute>} />
+        <Route path="/student/profile" element={
+          <ProtectedRoute allowedRoles={['student']}><StudentProfile /></ProtectedRoute>} />
 
         <Route path="/admin/dashboard" element={
           <ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
@@ -55,8 +61,12 @@ function App() {
           <ProtectedRoute allowedRoles={['admin']}><AdminCourseDetail /></ProtectedRoute>} />
         <Route path="/admin/quizzes" element={
           <ProtectedRoute allowedRoles={['admin']}><AdminQuizzes /></ProtectedRoute>} />
+        <Route path="/admin/students" element={
+          <ProtectedRoute allowedRoles={['admin']}><AdminStudents /></ProtectedRoute>} />
+        <Route path="/admin/reports" element={
+          <ProtectedRoute allowedRoles={['admin']}><AdminReports /></ProtectedRoute>} />
 
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
