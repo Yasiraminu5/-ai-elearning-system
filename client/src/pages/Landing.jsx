@@ -1,7 +1,26 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // If already logged in, go to the correct dashboard
+  const handleGetStarted = () => {
+    if (user) {
+      navigate(user.role === 'admin' ? '/admin/dashboard' : '/student/dashboard');
+    } else {
+      navigate('/register');
+    }
+  };
+
+  const handleSignIn = () => {
+    if (user) {
+      navigate(user.role === 'admin' ? '/admin/dashboard' : '/student/dashboard');
+    } else {
+      navigate('/login');
+    }
+  };
 
   const features = [
     { icon: '🤖', title: 'AI-Powered Recommendations', desc: 'Our intelligent rule-based engine analyses your performance and interests to suggest the most relevant courses and quizzes for you.' },
@@ -33,15 +52,29 @@ const Landing = () => {
         <div style={{ fontSize:'1.4rem', fontWeight:800, color:'#667eea' }}>
           EduAI
         </div>
-        <div style={{ display:'flex', gap:'1rem' }}>
-          <button onClick={() => navigate('/login')}
-            style={{ padding:'0.5rem 1.25rem', borderRadius:'8px', border:'1.5px solid #667eea', background:'transparent', color:'#667eea', fontWeight:600, cursor:'pointer', fontSize:'0.9rem' }}>
-            Sign In
-          </button>
-          <button onClick={() => navigate('/register')}
-            style={{ padding:'0.5rem 1.25rem', borderRadius:'8px', border:'none', background:'linear-gradient(135deg,#667eea,#764ba2)', color:'#fff', fontWeight:600, cursor:'pointer', fontSize:'0.9rem' }}>
-            Get Started
-          </button>
+        <div style={{ display:'flex', gap:'1rem', alignItems:'center' }}>
+          {user ? (
+            <>
+              <span style={{ fontSize:'0.875rem', color:'#555' }}>
+                Welcome, {user.fullName}
+              </span>
+              <button onClick={handleGetStarted}
+                style={{ padding:'0.5rem 1.25rem', borderRadius:'8px', border:'none', background:'linear-gradient(135deg,#667eea,#764ba2)', color:'#fff', fontWeight:600, cursor:'pointer', fontSize:'0.9rem' }}>
+                Go to Dashboard
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleSignIn}
+                style={{ padding:'0.5rem 1.25rem', borderRadius:'8px', border:'1.5px solid #667eea', background:'transparent', color:'#667eea', fontWeight:600, cursor:'pointer', fontSize:'0.9rem' }}>
+                Sign In
+              </button>
+              <button onClick={handleGetStarted}
+                style={{ padding:'0.5rem 1.25rem', borderRadius:'8px', border:'none', background:'linear-gradient(135deg,#667eea,#764ba2)', color:'#fff', fontWeight:600, cursor:'pointer', fontSize:'0.9rem' }}>
+                Get Started
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -63,14 +96,23 @@ const Landing = () => {
             An intelligent collaborative e-learning system that adapts to your learning style, tracks your progress, and recommends the best courses and quizzes based on your performance.
           </p>
           <div style={{ display:'flex', gap:'1rem', justifyContent:'center', flexWrap:'wrap' }}>
-            <button onClick={() => navigate('/register')}
-              style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'#fff', color:'#667eea', fontWeight:700, cursor:'pointer', fontSize:'1rem', boxShadow:'0 4px 20px rgba(0,0,0,0.15)' }}>
-              Start Learning Free →
-            </button>
-            <button onClick={() => navigate('/login')}
-              style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'2px solid rgba(255,255,255,0.6)', background:'transparent', color:'#fff', fontWeight:600, cursor:'pointer', fontSize:'1rem' }}>
-              Sign In
-            </button>
+            {user ? (
+              <button onClick={handleGetStarted}
+                style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'#fff', color:'#667eea', fontWeight:700, cursor:'pointer', fontSize:'1rem', boxShadow:'0 4px 20px rgba(0,0,0,0.15)' }}>
+                Go to Dashboard →
+              </button>
+            ) : (
+              <>
+                <button onClick={handleGetStarted}
+                  style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'#fff', color:'#667eea', fontWeight:700, cursor:'pointer', fontSize:'1rem', boxShadow:'0 4px 20px rgba(0,0,0,0.15)' }}>
+                  Start Learning Free →
+                </button>
+                <button onClick={handleSignIn}
+                  style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'2px solid rgba(255,255,255,0.6)', background:'transparent', color:'#fff', fontWeight:600, cursor:'pointer', fontSize:'1rem' }}>
+                  Sign In
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -79,10 +121,10 @@ const Landing = () => {
       <section style={{ background:'#fff', padding:'3rem 2rem' }}>
         <div style={{ maxWidth:'900px', margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:'2rem', textAlign:'center' }}>
           {[
-            { value:'5+', label:'Expert Courses' },
-            { value:'3+', label:'Practice Quizzes' },
-            { value:'5', label:'AI Rules Engine' },
-            { value:'100%', label:'Free to Start' },
+            { value:'6+',   label:'Expert Courses'    },
+            { value:'3+',   label:'Practice Quizzes'  },
+            { value:'5',    label:'AI Rules Engine'   },
+            { value:'100%', label:'Free to Start'     },
           ].map((stat, i) => (
             <div key={i}>
               <div style={{ fontSize:'2.5rem', fontWeight:800, color:'#667eea', marginBottom:'0.25rem' }}>{stat.value}</div>
@@ -119,9 +161,7 @@ const Landing = () => {
       <section style={{ background:'#fff', padding:'5rem 2rem' }}>
         <div style={{ maxWidth:'900px', margin:'0 auto' }}>
           <div style={{ textAlign:'center', marginBottom:'3rem' }}>
-            <h2 style={{ fontSize:'2rem', fontWeight:700, marginBottom:'0.75rem' }}>
-              How It Works
-            </h2>
+            <h2 style={{ fontSize:'2rem', fontWeight:700, marginBottom:'0.75rem' }}>How It Works</h2>
             <p style={{ color:'#666' }}>Get started in four simple steps.</p>
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'2rem' }}>
@@ -153,9 +193,9 @@ const Landing = () => {
               </div>
             ))}
           </div>
-          <button onClick={() => navigate('/register')}
+          <button onClick={handleGetStarted}
             style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'#fff', color:'#667eea', fontWeight:700, cursor:'pointer', fontSize:'1rem' }}>
-            Try It Free →
+            {user ? 'Go to Dashboard →' : 'Try It Free →'}
           </button>
         </div>
       </section>
@@ -164,20 +204,32 @@ const Landing = () => {
       <section style={{ background:'#f0f4f8', padding:'5rem 2rem', textAlign:'center' }}>
         <div style={{ maxWidth:'600px', margin:'0 auto' }}>
           <h2 style={{ fontSize:'2rem', fontWeight:700, marginBottom:'1rem' }}>
-            Ready to Start Learning?
+            {user ? `Continue Learning, ${user.fullName}` : 'Ready to Start Learning?'}
           </h2>
           <p style={{ color:'#666', marginBottom:'2rem', lineHeight:1.7 }}>
-            Join EduAI today and experience a smarter way to learn. Create your free account and get personalised course recommendations instantly.
+            {user
+              ? 'Head back to your dashboard to continue your personalised learning journey.'
+              : 'Join EduAI today and experience a smarter way to learn. Create your free account and get personalised course recommendations instantly.'
+            }
           </p>
           <div style={{ display:'flex', gap:'1rem', justifyContent:'center', flexWrap:'wrap' }}>
-            <button onClick={() => navigate('/register')}
-              style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'linear-gradient(135deg,#667eea,#764ba2)', color:'#fff', fontWeight:700, cursor:'pointer', fontSize:'1rem' }}>
-              Create Free Account
-            </button>
-            <button onClick={() => navigate('/login')}
-              style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'1.5px solid #667eea', background:'transparent', color:'#667eea', fontWeight:600, cursor:'pointer', fontSize:'1rem' }}>
-              Sign In
-            </button>
+            {user ? (
+              <button onClick={handleGetStarted}
+                style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'linear-gradient(135deg,#667eea,#764ba2)', color:'#fff', fontWeight:700, cursor:'pointer', fontSize:'1rem' }}>
+                Go to Dashboard
+              </button>
+            ) : (
+              <>
+                <button onClick={handleGetStarted}
+                  style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'none', background:'linear-gradient(135deg,#667eea,#764ba2)', color:'#fff', fontWeight:700, cursor:'pointer', fontSize:'1rem' }}>
+                  Create Free Account
+                </button>
+                <button onClick={handleSignIn}
+                  style={{ padding:'0.9rem 2.5rem', borderRadius:'10px', border:'1.5px solid #667eea', background:'transparent', color:'#667eea', fontWeight:600, cursor:'pointer', fontSize:'1rem' }}>
+                  Sign In
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
