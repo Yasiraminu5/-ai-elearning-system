@@ -1,5 +1,11 @@
 #!/bin/bash
+echo "Installing server dependencies..."
+cd server && npm install
+
+echo "Installing client dependencies..."
+cd ../client && npm install
+
 echo "Building React frontend..."
-cd /workspaces/-ai-elearning-system/client
 npm run build
-echo "Build complete. Restart the backend server to apply changes."
+
+echo "Build complete."
