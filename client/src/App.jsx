@@ -19,6 +19,7 @@ import AdminQuizzes            from './pages/admin/AdminQuizzes';
 import AdminStudents           from './pages/admin/AdminStudents';
 import AdminReports            from './pages/admin/AdminReports';
 import ProtectedRoute          from './routes/ProtectedRoute';
+import NotFound                from './pages/NotFound';
 
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -66,7 +67,7 @@ function App() {
         <Route path="/admin/reports" element={
           <ProtectedRoute allowedRoles={['admin']}><AdminReports /></ProtectedRoute>} />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
