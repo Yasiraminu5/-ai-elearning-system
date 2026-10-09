@@ -4,18 +4,6 @@
   "description": "AI-Powered Collaborative E-Learning System",
   "scripts": {
     "build": "cd client && npm install && npm run build",
-    "start": "cd server && node server.js",
-    "install-all": "cd server && npm install && cd ../client && npm install"
-  }
-}
-EOFcat > /workspaces/-ai-elearning-system/package.json << 'EOF'
-{
-  "name": "ai-elearning-system",
-  "version": "1.0.0",
-  "description": "AI-Powered Collaborative E-Learning System",
-  "scripts": {
-    "build": "cd client && npm install && npm run build",
-    "start": "cd server && node server.js",
-    "install-all": "cd server && npm install && cd ../client && npm install"
+    "start": "cd server && node server.js"
   }
 }
