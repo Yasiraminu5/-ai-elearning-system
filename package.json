@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AI-Powered Collaborative E-Learning System",
   "scripts": {
-    "build": "cd client && npm install && npm run build",
-    "start": "cd server && node server.js"
+    "build": "cd client && npm install --include=dev && npm run build",
+    "start": "cd server && npm install --omit=dev && node server.js"
   }
 }
